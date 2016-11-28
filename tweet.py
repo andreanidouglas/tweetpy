@@ -5,8 +5,8 @@ import json
 
 config_file = 'tweet.ini'
 
-consumer_key='IBlCOHn41nfVuNLdVhT2eG7mm'
-consumer_secret='3Y4hbLpfIRbeTrXSsWXXhkGEP5KAboLVoQwVfhhY1EnwAad4Nt'
+consumer_key='RzIGV2ovHzmopdFzZmiuH9SXU'
+consumer_secret='1ewAqN3il9FjnSKKqoWXhdTop5kycYnDNXQtX7EtMHqZgi2LBc'
 
 def read_config():
     parser = SafeConfigParser()
@@ -44,7 +44,8 @@ if __name__ == '__main__':
             config.write(config_file_desc)
             
     client = OAuthClient(consumer_key, consumer_secret)
-    response = client.post_status(sys.argv[1], oauth_secret, oauth_token_secret)
-    json_response = json.loads(response.decode('utf-8'))
-    formatted_response = "User {} said: {} - at: {}"
-    print(formatted_response.format(json_response['user']['screen_name'], json_response['text'], json_response['created_at']))
+    response = client.post_status(sys.argv[1], None , oauth_secret, oauth_token_secret)
+    for resp in response:
+        json_response = json.loads(resp.decode('utf-8'))
+        formatted_response = "User: {} - said: {} - id: {}"
+        print(formatted_response.format(json_response['user']['screen_name'], json_response['text'], json_response['id_str']))
