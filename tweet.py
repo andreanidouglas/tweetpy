@@ -1,14 +1,21 @@
-from tweetpy import OAuthClient
-from configparser import SafeConfigParser, NoSectionError, NoOptionError, ConfigParser
+"""
+Main twitter module
+"""
+
 import sys
 import json
+from tweetpy import OAuthClient
+from configparser import SafeConfigParser, NoSectionError, NoOptionError, ConfigParser
+
 
 config_file = 'tweet.ini'
-
-consumer_key='RzIGV2ovHzmopdFzZmiuH9SXU'
-consumer_secret='1ewAqN3il9FjnSKKqoWXhdTop5kycYnDNXQtX7EtMHqZgi2LBc'
+consumer_key=''
+consumer_secret=''
 
 def read_config():
+    """
+        read configuration file for twitter credentials
+    """
     parser = SafeConfigParser()
     parser.read(config_file)
     result = None
@@ -16,15 +23,14 @@ def read_config():
         access_token = parser.get('twitter_cred', 'access_token')
         access_token_secret = parser.get('twitter_cred', 'access_token_secret')
         result = (access_token, access_token_secret)
-    except NoSectionError as e:
+    except NoSectionError:
         return result
-    except NoOptionError as e:
+    except NoOptionError:
         return result
-    finally: 
-        return result
-        
+    return result
+
 if __name__ == '__main__':
-    twitter = OAuthClient(consumer_key, consumer_secret)
+    TWITTER = OAuthClient(consumer_key, consumer_secret)
     config = read_config()
     if isinstance(config, tuple):
         oauth_secret = config[0]
@@ -44,8 +50,10 @@ if __name__ == '__main__':
             config.write(config_file_desc)
             
     client = OAuthClient(consumer_key, consumer_secret)
-    response = client.post_status(sys.argv[1], None , oauth_secret, oauth_token_secret)
+    response = client.post_status(sys.argv[1], None, oauth_secret, oauth_token_secret)
     for resp in response:
         json_response = json.loads(resp.decode('utf-8'))
         formatted_response = "User: {} - said: {} - id: {}"
-        print(formatted_response.format(json_response['user']['screen_name'], json_response['text'], json_response['id_str']))
+        print(formatted_response.format(json_response['user']['screen_name'],
+                                        json_response['text'],
+                                        json_response['id_str']))
