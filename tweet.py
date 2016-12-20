@@ -35,8 +35,8 @@ def main():
     """
 
     config_file = 'tweet.ini'
-    consumer_key = 'RzIGV2ovHzmopdFzZmiuH9SXU'
-    consumer_secret = '1ewAqN3il9FjnSKKqoWXhdTop5kycYnDNXQtX7EtMHqZgi2LBc'
+    consumer_key = ''
+    consumer_secret = ''
 
     OAuthClient(consumer_key, consumer_secret)
     config = read_config(config_file)
