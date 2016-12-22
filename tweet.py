@@ -28,18 +28,15 @@ def read_config(config_file):
         return result
     return result
 
-def main():
+def get_config_parameters():
     """
-        Gets argv[0] and post it as tweet for the authenticated user
-        if no user available, go through the loggin proccess
+    Opens and parse config.ini
     """
-
     config_file = 'tweet.ini'
     consumer_key = ''
     consumer_secret = ''
-
-    OAuthClient(consumer_key, consumer_secret)
     config = read_config(config_file)
+
     if isinstance(config, tuple):
         oauth_secret = config[0]
         oauth_token_secret = config[1]
@@ -57,6 +54,16 @@ def main():
                                   'access_token_secret' : oauth_token_secret}
         with open(config_file, 'w') as config_file_desc:
             config.write(config_file_desc)
+    return [consumer_key, consumer_secret, oauth_secret, oauth_token_secret]
+
+
+def main():
+    """
+        Gets argv[0] and post it as tweet for the authenticated user
+        if no user available, go through the loggin proccess
+    """
+
+    consumer_key, consumer_secret, oauth_secret, oauth_token_secret = get_config_parameters()
 
     client = OAuthClient(consumer_key, consumer_secret)
     response = client.post_status(sys.argv[1], None, oauth_secret, oauth_token_secret)
