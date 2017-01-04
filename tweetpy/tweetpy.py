@@ -45,7 +45,7 @@ class OAuthClient(httplib2.Http):
 
 
         req.sign_request(self.method, self.consumer, None)
-        scheme, netloc = urllib.parse.urlparse(host+request_token)
+        scheme, netloc, path, params, query, fragment = urllib.parse.urlparse(host+request_token)
         urllib.parse.urlunparse((scheme, netloc, '', None, None, None))
         body = req.to_postdata()
         super(OAuthClient, self).__init__(**kwargs)
@@ -80,8 +80,8 @@ class OAuthClient(httplib2.Http):
         client = oauth.Client(self.consumer, new_token)
 
         resp, content = client.request(host + access_token, "POST")
-        if resp.code == 200:
-            return dict(urllib.parse.parse_qsl(content))
+        
+        return dict(urllib.parse.parse_qsl(content))
 
     def verify_credentials(self, oauth_token, oauth_token_secret):
         """

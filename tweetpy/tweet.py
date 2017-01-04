@@ -5,7 +5,7 @@ Main twitter module
 
 import sys
 import json
-from tweetpy import OAuthClient
+from tweetpy.tweetpy import OAuthClient as OAuthClient
 from configparser import SafeConfigParser, NoSectionError, NoOptionError, ConfigParser
 
 
@@ -32,7 +32,7 @@ def get_config_parameters():
     """
     Opens and parse config.ini
     """
-    config_file = 'tweet.ini'
+    config_file = './tweetpy/tweet.ini'
     consumer_key = ''
     consumer_secret = ''
     config = read_config(config_file)
@@ -57,7 +57,7 @@ def get_config_parameters():
     return [consumer_key, consumer_secret, oauth_secret, oauth_token_secret]
 
 
-def main():
+def send_tweet(tweet):
     """
         Gets argv[0] and post it as tweet for the authenticated user
         if no user available, go through the loggin proccess
@@ -66,7 +66,7 @@ def main():
     consumer_key, consumer_secret, oauth_secret, oauth_token_secret = get_config_parameters()
 
     client = OAuthClient(consumer_key, consumer_secret)
-    response = client.post_status(sys.argv[1], None, oauth_secret, oauth_token_secret)
+    response = client.post_status(tweet, None, oauth_secret, oauth_token_secret)
     for resp in response:
         json_response = json.loads(resp.decode('utf-8'))
         formatted_response = "User: {} - said: {} - id: {}"
@@ -74,8 +74,4 @@ def main():
         print(formatted_response.format(json_response['user']['screen_name'],
                                         json_response['text'],
                                         json_response['id_str']))
-
-
-
-if __name__ == "__main__":
-    main()
+                                        

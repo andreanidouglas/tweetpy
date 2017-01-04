@@ -2,11 +2,11 @@
 Uses twitter endpoint to search for a specific word
 """
 
-import urllib
 import sys
-import oauth2 as oauth
+import urllib
 import json
 
+import oauth2 as oauth
 from tweetpy import OAuthClient
 import tweet
 
@@ -36,29 +36,28 @@ class TweetSearch():
         """
         consumer_key, consumer_secret, oauth_secret, oauth_token_secret = tweet.get_config_parameters()
 
-        print(consumer_key, consumer_secret)
-
         oauthc = OAuthClient(consumer_key, consumer_secret)
         new_token = oauth.Token(oauth_secret, oauth_token_secret)
-
         client = oauth.Client(oauthc.consumer, new_token)
-
-        #print(self.__query)
         response = client.request(self.__query, method='GET')
+
         json_dict = json.loads(response[1].decode())
         statuses = json_dict['statuses']
         for status in statuses:
-            print("User: {} said: {}".format(status['user']['screen_name'], status['text'], ))
-            print('========================================')
+            print("User: {} said: {} at: {}".format(status['user']['screen_name'],
+                                                    status['text'],
+                                                    status['created_at']))
+            print('=' * 80)
 
 
 
 def search(param):
-    s = TweetSearch()
-    s.build_query(param, True, False)
-    s.search()
+    """
+    Search the twitter api for sys.argv[1]
+    """
+    tweetSearch = TweetSearch()
+    tweetSearch.build_query(param, True, False)
+    tweetSearch.search()
 
 if __name__ == '__main__':
     search(sys.argv[1])
-
-
