@@ -7,8 +7,8 @@ import urllib
 import json
 
 import oauth2 as oauth
-from tweetpy import OAuthClient
-import tweet
+from tweetpy.tweetpy import OAuthClient as OAuthClient
+import tweetpy.tweet as tweet
 
 class TweetSearch():
     """
@@ -59,5 +59,3 @@ def search(param):
     tweetSearch.build_query(param, True, False)
     tweetSearch.search()
 
-if __name__ == '__main__':
-    search(sys.argv[1])

@@ -33,8 +33,8 @@ def get_config_parameters():
     Opens and parse config.ini
     """
     config_file = './tweetpy/tweet.ini'
-    consumer_key = ''
-    consumer_secret = ''
+    consumer_key = 'qAO4SICbLvQFVG8gJKTVFK3nm'
+    consumer_secret = 'X3k3epRHH1jOrmPuWz7BR6vkBHAPnUESb8dMgsg2coZ3qY5GwJ'
     config = read_config(config_file)
 
     if isinstance(config, tuple):

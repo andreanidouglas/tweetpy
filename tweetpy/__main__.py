@@ -1,15 +1,19 @@
 import sys
 import tweetpy.tweet as t
+import tweetpy.tweet_search as ts
 
-def main(args=None):
-    """The main routine."""
-    if args is None:
-        args = sys.argv[1:]
+import argparse
 
-    # Do argument parsing here (eg. with argparse) and anything else
-    # you want your project to do.
+def main():
+    parser = argparse.ArgumentParser()
     
-    t.send_tweet("This is a drill")
+    parser.add_argument("tweet", help="Tweet the given string")
+    parser.add_argument("--search", help="Search the following string", action="store_true")
+    
+    args = parser.parse_args()
+    
+    if args.search:
+        ts.search(args.tweet)
     
 if __name__ == "__main__":
     main()
