@@ -33,8 +33,8 @@ def get_config_parameters():
     Opens and parse config.ini
     """
     config_file = './tweetpy/tweet.ini'
-    consumer_key = ''
-    consumer_secret = ''
+    consumer_key = 'EkhAeaBomoRSI6XrG0wj8JzgN'
+    consumer_secret = 'Qb6Ogq6XMsY4HwVWo5Uc5F0cV9FwRtpUmOUmvTVK2gSp9MX1Mc'
     config = read_config(config_file)
 
     if isinstance(config, tuple):
@@ -57,7 +57,7 @@ def get_config_parameters():
     return [consumer_key, consumer_secret, oauth_secret, oauth_token_secret]
 
 
-def send_tweet(tweet):
+def send_tweet(tweet, media=None):
     """
         Gets argv[0] and post it as tweet for the authenticated user
         if no user available, go through the loggin proccess
@@ -66,12 +66,13 @@ def send_tweet(tweet):
     consumer_key, consumer_secret, oauth_secret, oauth_token_secret = get_config_parameters()
 
     client = OAuthClient(consumer_key, consumer_secret)
-    response = client.post_status(tweet, None, oauth_secret, oauth_token_secret)
-    for resp in response:
-        json_response = json.loads(resp.decode('utf-8'))
-        formatted_response = "User: {} - said: {} - id: {}"
-        print("")
-        print(formatted_response.format(json_response['user']['screen_name'],
-                                        json_response['text'],
-                                        json_response['id_str']))
+    response = client.post_status(tweet, None, oauth_secret, oauth_token_secret, media=media)
+    print (response)
+    # for resp in response:
+    #     json_response = json.loads(resp.decode('utf-8'))
+    #     formatted_response = "User: {} - said: {} - id: {}"
+    #     print("")
+    #     print(formatted_response.format(json_response['user']['screen_name'],
+    #                                     json_response['text'],
+    #                                     json_response['id_str']))
                                         

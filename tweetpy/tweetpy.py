@@ -97,7 +97,7 @@ class OAuthClient(httplib2.Http):
         return self.__response
 
 
-    def post_status(self, status, in_reply_to, oauth_token, oauth_token_secret, keep_last_response=False):
+    def post_status(self, status, in_reply_to, oauth_token, oauth_token_secret, keep_last_response=False, media=None):
         """
         Create a twitter from the logged user
         """
@@ -114,10 +114,15 @@ class OAuthClient(httplib2.Http):
             return self.__response
         new_token = oauth.Token(oauth_token, oauth_token_secret)
         client = oauth.Client(self.consumer, new_token)
+        
         if in_reply_to:
             body = "status={}&in_reply_to_status_id={}".format(status, in_reply_to)
+        elif media != None:
+            body = "status={}&media_ids={}".format(status, media)
         else:
             body = "status={}".format(status)
+        
+        print(body)
         response = client.request(post_status, body=body, method="POST")
         self.__response.insert(0, response[1])
         return self.__response
